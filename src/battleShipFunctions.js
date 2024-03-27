@@ -121,8 +121,9 @@ function computer() {
     let opponentBoard = gameBoardFactory();
     let ships = getShips(shipType);
     let shipCount = 0;
+    let attackCoor = [];
+
     const getCoordinate = function(ship) {
-       // console.log(ship);
         const len = ship.length;
         let start, end;
         let yCo;
@@ -146,11 +147,8 @@ function computer() {
                 if (setPosition != "invalid"){
                     this.shipCount++;
                     return setPosition;
-                    }
-                   
-                }          
-            
-        
+                    }               
+                }                
         }
         else {
             while(testPosition == false) {
@@ -173,10 +171,32 @@ function computer() {
             
         
         }       
-   //     return {start, end};
+    }
+    const attack = function() {
+        let test = false;
+        let cood;
+        while (test == false){     
+            let xCo = Math.floor(Math.random()*10);
+            let yCo = Math.floor(Math.random()*10);
+            cood = [yCo, xCo];
+            let count = 0;
+            for (let x = 0; x<attackCoor.length; x++)
+            {
+                if (attackCoor[x][0] == cood[0] && attackCoor[x][1] == cood[1])
+                {
+                    count++;
+                }
+            }
+            if (count == 0)
+            {
+                attackCoor.push(cood);
+                test = true;
+            }
+        } 
+        this.opponentBoard.receiveAttack(cood);
     }
 
-    return {ships, getCoordinate, computerBoard, opponentBoard, shipCount}
+    return {ships, getCoordinate, computerBoard, opponentBoard, shipCount, attack, attackCoor}
 }
 
 

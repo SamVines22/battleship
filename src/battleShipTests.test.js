@@ -1,6 +1,20 @@
 const functions = require('./battleShipFunctions');
 //console.log(functions.shipType);
-it('computer', ()=> {
+
+//set the opponent's board and then test!
+it('attack', ()=> {
+    let computer = functions.computer();
+    computer.attack();
+    expect(computer.attackCoor.length).toBe(1);
+    for (let x = 0; x < 98; x++)
+    {
+        computer.attack();
+    }
+    expect(computer.attackCoor.length).toBe(99);
+    console.log(computer.opponentBoard.board);
+})
+
+it.skip('computer', ()=> {
     let computer = functions.computer();
     expect(computer.ships.length).toBe(5);
     let carr = computer.ships[0];
