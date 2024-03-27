@@ -1,0 +1,250 @@
+function plusThree(num){
+    return 3+num;
+}
+
+const shipType = [{name: "Carrier", length: 5}, {name: "Battleship", length: 4}, {name: "Cruiser", length: 3}, {name: "Submarine", length: 3}, {name: "Destroyer", length: 2}];
+
+function shipFactory(obj){
+    const name = obj.name;
+    const length = obj.length;
+    let hitCount = 0;
+    const getHitCount = function(){return hitCount};
+    const hit = function () {
+        return hitCount++
+    }
+    const isSunk = function() {
+        if (this.getHitCount() == length)
+        {
+             return true;
+        }
+        else return false
+       
+    }
+
+    return {name, length, hit, getHitCount, isSunk,}
+    
+}
+
+function gameBoardFactory(){
+    let board = createBoard();
+    let ships = getShips(shipType);
+    let sunkShips = 4;
+    let shipsOnBoard = 0;
+    let shipCount = ships.length;
+    let gameOver = false;
+    const setLocation = function (ship, start, end) {
+           
+                let y = end[0] - start[0];
+                let x = end[1] - start[1];
+                if (y!= 0)
+                {   for (let i = 0; i<y; i++)
+                    {
+                        if (board[start[0]+i][start[1]] != null)
+                        {
+                            console.log("invalid");
+                            return "invalid";
+                        }
+                    }   
+
+
+                    for (let i = 0; i<y; i++)
+                    {
+                        board[start[0]+i][start[1]] = `${ship[0]}${ship[1]}${ship[2]}`;
+                        
+                    }         
+                    shipsOnBoard++;
+                }
+                else {  
+                    for (let i = 0; i <x; i++)
+                    {
+                        if (this.board[start[0]][start[1]+i] != null)
+                        {
+                            console.log("invalid");
+                            return "invalid";
+                        }
+                    }
+                    for (let i = 0; i <x; i++)
+                    {
+                        board[start[0]][start[1]+i] = `${ship[0]}${ship[1]}${ship[2]}`;
+                        
+                    }
+                    shipsOnBoard++;
+                }
+             //   return board;
+                }
+        
+       
+    
+    const receiveAttack = function(arr) {
+       
+        if (board[arr[0]][arr[1]]!= null && board[arr[0]][arr[1]] != "*" && board[arr[0]][arr[1]]!= "X")
+        {
+            let target = board[arr[0]][arr[1]];
+            for (let x = 0; x < ships.length; x++)
+            {
+                let name = ships[x].name[0] + ships[x].name[1] + ships[x].name[2];
+                if (name == target)
+                {
+                    ships[x].hit();  
+                    if (ships[x].isSunk() == true)
+                    {
+                        sunkShips++;
+                        if (sunkShips == shipCount)
+                        {
+                            console.log("TWAT FUCK");
+                            this.gameOver = true;                         
+                        }
+                    }
+                }
+                
+            }
+            board[arr[0]][arr[1]] = "*";
+        }
+        else if (board[arr[0]][arr[1]]== null){
+            board[arr[0]][arr[1]] = "X";
+            return false;
+        }
+    }
+
+  
+    return {board, ships, setLocation, receiveAttack, gameOver}
+}
+
+
+function player(name)
+{
+    let playerBoard = gameBoardFactory();
+    let opponentBoard = gameBoardFactory();
+    return {name, playerBoard, opponentBoard};
+}
+
+function computer() {
+    let computerBoard = gameBoardFactory();
+    let opponentBoard = gameBoardFactory();
+    let ships = getShips(shipType);
+    let shipCount = 0;
+    const getCoordinate = function(ship) {
+       // console.log(ship);
+        const len = ship.length;
+        let start, end;
+        let yCo;
+        let xCo;
+        let setPosition;
+        let test = Math.random();
+        if (test >= 0.5) {
+            while (setPosition != "invalid") {
+                    do
+                    {
+                        yCo = Math.floor((Math.random()*10));
+                        xCo = Math.floor((Math.random())*10);
+                        
+                    }
+                    while (yCo + len > 9 )
+                start = [yCo, xCo];
+                end = [yCo + len, xCo];
+                console.log(`start is ${start}`);
+                console.log(`end is ${end}`);
+                setPosition = this.computerBoard.setLocation(ship.name, start, end);
+                console.log(setPosition);
+                if (setPosition != "invalid"){
+                    console.log("GOOD");
+                    this.shipCount++;
+                    return setPosition;
+                    }
+                    else {console.log(setPosition)}
+                    console.log("gimp");
+                }          
+            
+        
+        }
+        else {
+            while(setPosition != "invalid") {
+                do
+                {
+                    yCo  =  Math.floor((Math.random()*10));
+                    xCo = Math.floor((Math.random())*10);  
+                }
+                while (xCo + len > 9)
+            start = [yCo, xCo];
+                console.log(`start is ${start}`);
+            end = [yCo, xCo + len];
+                console.log(`end is ${end}`);
+            setPosition = this.computerBoard.setLocation(ship.name, start, end);
+            console.log(setPosition);
+            if (setPosition != "invalid"){ 
+                console.log("GOOD2");
+                this.shipCount++;
+                return setPosition;
+                }
+                else {console.log(setPosition)}
+            console.log("gimp");
+            } 
+            
+        
+        }       
+        return {start, end};
+    }
+
+    return {ships, getCoordinate, computerBoard, opponentBoard, shipCount}
+}
+
+
+function createBoard() {
+    let sq = []
+    for(let x = 0; x< 10; x++)
+    {
+         sq.push([]);
+        for (let y = 0; y< 10; y++)
+        {
+            sq[x].push(null)
+        }
+    }
+
+   return sq;
+}
+
+function getShips(arr) {
+    let list = []
+    for (let x = 0; x<arr.length; x++)
+    {
+        obj = shipFactory(arr[x]);
+        list.push(obj);
+    }
+
+    return list;
+    
+}
+
+function getNumberX (len) {
+
+    do {
+        yCo  =  Math.floor((Math.random()*10));
+        xCo = Math.floor((Math.random())*10);
+    }
+    while (xCo + len > 9)
+    
+    let start = [xCo, yCo];
+    let end = [xC0 + len, yCo];
+    return {start, end}
+
+}
+
+
+function getNumberY (len) {
+
+    do {
+        yCo  =  Math.floor((Math.random()*10));
+        xCo = Math.floor((Math.random())*10);
+    }
+    while (xCo + len > 9)
+    
+    let start = [xCo, yCo];
+    let end = [xC0, yCo + len];
+    return {start, end}
+
+}
+
+//export {shipType, carrierFactory};
+module.exports = {shipType, shipFactory, createBoard, gameBoardFactory, getShips, player, computer};
+
+//module.exports = {plusThree};
