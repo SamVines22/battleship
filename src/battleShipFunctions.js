@@ -41,7 +41,6 @@ function gameBoardFactory(){
                     {
                         if (board[start[0]+i][start[1]] != null)
                         {
-                            console.log("invalid");
                             return "invalid";
                         }
                     }   
@@ -59,7 +58,6 @@ function gameBoardFactory(){
                     {
                         if (this.board[start[0]][start[1]+i] != null)
                         {
-                            console.log("invalid");
                             return "invalid";
                         }
                     }
@@ -129,10 +127,11 @@ function computer() {
         let start, end;
         let yCo;
         let xCo;
+        let testPosition = false;
         let setPosition;
         let test = Math.random();
         if (test >= 0.5) {
-            while (setPosition != "invalid") {
+            while (testPosition == false) {
                     do
                     {
                         yCo = Math.floor((Math.random()*10));
@@ -142,23 +141,19 @@ function computer() {
                     while (yCo + len > 9 )
                 start = [yCo, xCo];
                 end = [yCo + len, xCo];
-                console.log(`start is ${start}`);
-                console.log(`end is ${end}`);
                 setPosition = this.computerBoard.setLocation(ship.name, start, end);
-                console.log(setPosition);
+               
                 if (setPosition != "invalid"){
-                    console.log("GOOD");
                     this.shipCount++;
                     return setPosition;
                     }
-                    else {console.log(setPosition)}
-                    console.log("gimp");
+                   
                 }          
             
         
         }
         else {
-            while(setPosition != "invalid") {
+            while(testPosition == false) {
                 do
                 {
                     yCo  =  Math.floor((Math.random()*10));
@@ -166,23 +161,19 @@ function computer() {
                 }
                 while (xCo + len > 9)
             start = [yCo, xCo];
-                console.log(`start is ${start}`);
             end = [yCo, xCo + len];
-                console.log(`end is ${end}`);
             setPosition = this.computerBoard.setLocation(ship.name, start, end);
-            console.log(setPosition);
+           
             if (setPosition != "invalid"){ 
-                console.log("GOOD2");
                 this.shipCount++;
                 return setPosition;
                 }
-                else {console.log(setPosition)}
-            console.log("gimp");
+              
             } 
             
         
         }       
-        return {start, end};
+   //     return {start, end};
     }
 
     return {ships, getCoordinate, computerBoard, opponentBoard, shipCount}
@@ -215,34 +206,7 @@ function getShips(arr) {
     
 }
 
-function getNumberX (len) {
 
-    do {
-        yCo  =  Math.floor((Math.random()*10));
-        xCo = Math.floor((Math.random())*10);
-    }
-    while (xCo + len > 9)
-    
-    let start = [xCo, yCo];
-    let end = [xC0 + len, yCo];
-    return {start, end}
-
-}
-
-
-function getNumberY (len) {
-
-    do {
-        yCo  =  Math.floor((Math.random()*10));
-        xCo = Math.floor((Math.random())*10);
-    }
-    while (xCo + len > 9)
-    
-    let start = [xCo, yCo];
-    let end = [xC0, yCo + len];
-    return {start, end}
-
-}
 
 //export {shipType, carrierFactory};
 module.exports = {shipType, shipFactory, createBoard, gameBoardFactory, getShips, player, computer};

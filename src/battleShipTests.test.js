@@ -5,27 +5,21 @@ it('computer', ()=> {
     expect(computer.ships.length).toBe(5);
     let carr = computer.ships[0];
     expect(carr.length).toBe(5);
-  /*  //console.log(computer.getCoordinate(carr));
-    for (let x = 0; x< 100; x++)
+    let y = 0;
+    while (y < 10000) {
+        let comp = functions.computer();
+        for (let x = 0; x< comp.ships.length; x++)
     {
-        console.log(x);
-        expect(computer.getCoordinate(carr)).toBeDefined();
-    }*/
-    
-        
-    //console.log(computer.getCoordinate(computer.ships[0]));
-
-    //returns invalid doesn't redo the positioning!!!!!
-    for (let x = 0; x < computer.ships.length; x++)
-    {
-        console.log(computer.ships[x]);
-        computer.getCoordinate(computer.ships[x]);
+      
+        comp.getCoordinate(comp.ships[x]);
     }
-    console.log(computer.computerBoard.board);
-    console.log(computer.shipCount);
- 
+    expect(comp.shipCount).toBe(5);
+    y++;
 
+}
 })
+
+
 
 
 it.skip('player', ()=> {
