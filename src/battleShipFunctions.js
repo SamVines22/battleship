@@ -119,6 +119,7 @@ function player(name)
 function computer() {
     let computerBoard = gameBoardFactory();
     let opponentBoard = gameBoardFactory();
+    let newTry = createOppBoard();
     let ships = getShips(shipType);
     let shipCount = 0;
     let attackCoor = [];
@@ -193,10 +194,13 @@ function computer() {
                 test = true;
             }
         } 
-        this.opponentBoard.receiveAttack(cood);
+        if (this.opponentBoard.receiveAttack(cood) == true)
+        {
+            this.newTry[cood[0]][cood[1]].hit = 1;
+        }
     }
 
-    return {ships, getCoordinate, computerBoard, opponentBoard, shipCount, attack, attackCoor}
+    return {ships, getCoordinate, computerBoard, opponentBoard, shipCount, attack, attackCoor, newTry}
 }
 
 

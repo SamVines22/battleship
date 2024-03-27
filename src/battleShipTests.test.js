@@ -1,14 +1,14 @@
 const functions = require('./battleShipFunctions');
 
-it('opp board', ()=> {
+/*it('opp board', ()=> {
     let opp = functions.createOppBoard();
     console.log(opp);
     console.log(opp[9][1])
 
-})
+})*/
 
 
-it.skip('attack', ()=> {
+it('attack', ()=> {
     let computer = functions.computer();
     let ships = computer.ships;
     computer.opponentBoard.setLocation(ships[0].name, [0,0], [0,5]);
@@ -22,6 +22,7 @@ it.skip('attack', ()=> {
     }
     expect(computer.attackCoor.length).toBe(81);
     console.log(computer.opponentBoard.board);
+    console.log(computer.newTry);
 })
 
 it.skip('computer', ()=> {
