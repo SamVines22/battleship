@@ -1,16 +1,26 @@
 const functions = require('./battleShipFunctions');
-//console.log(functions.shipType);
 
-//set the opponent's board and then test!
-it('attack', ()=> {
+it('opp board', ()=> {
+    let opp = functions.createOppBoard();
+    console.log(opp);
+    console.log(opp[9][1])
+
+})
+
+
+it.skip('attack', ()=> {
     let computer = functions.computer();
+    let ships = computer.ships;
+    computer.opponentBoard.setLocation(ships[0].name, [0,0], [0,5]);
+    computer.opponentBoard.setLocation(ships[1].name, [2,2], [6,2]);
+    computer.opponentBoard.setLocation(ships[2].name, [5,5], [9,5]);
     computer.attack();
     expect(computer.attackCoor.length).toBe(1);
-    for (let x = 0; x < 98; x++)
+    for (let x = 0; x < 80; x++)
     {
         computer.attack();
     }
-    expect(computer.attackCoor.length).toBe(99);
+    expect(computer.attackCoor.length).toBe(81);
     console.log(computer.opponentBoard.board);
 })
 

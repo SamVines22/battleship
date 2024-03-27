@@ -28,7 +28,7 @@ function shipFactory(obj){
 function gameBoardFactory(){
     let board = createBoard();
     let ships = getShips(shipType);
-    let sunkShips = 4;
+    let sunkShips = 0;
     let shipsOnBoard = 0;
     let shipCount = ships.length;
     let gameOver = false;
@@ -89,7 +89,6 @@ function gameBoardFactory(){
                         sunkShips++;
                         if (sunkShips == shipCount)
                         {
-                            console.log("TWAT FUCK");
                             this.gameOver = true;                         
                         }
                     }
@@ -97,6 +96,7 @@ function gameBoardFactory(){
                 
             }
             board[arr[0]][arr[1]] = "*";
+            return true;
         }
         else if (board[arr[0]][arr[1]]== null){
             board[arr[0]][arr[1]] = "X";
@@ -227,8 +227,22 @@ function getShips(arr) {
 }
 
 
+function createOppBoard() {
+    let sq = [];
+    for (let x = 0; x< 10; x++)
+    {
+        sq.push([]);
+        for (let y = 0; y<10; y++)
+        {
+            let square = {pos: [x,y], hit: 0}
+            sq[x].push(square);
+        }
+    }
+    return sq;
+}
+
 
 //export {shipType, carrierFactory};
-module.exports = {shipType, shipFactory, createBoard, gameBoardFactory, getShips, player, computer};
+module.exports = {shipType, shipFactory, createBoard, gameBoardFactory, getShips, player, computer, createOppBoard};
 
 //module.exports = {plusThree};
