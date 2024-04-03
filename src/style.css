@@ -1,3 +1,65 @@
-body {
+
+body, html {
     color: red;
+    height: 100%;
+    width: 100%;
+    margin: 0px;
+}
+.container {
+    height: 100%;
+    width: 100%;
+}
+#header{
+    padding-top: 2%;
+    text-align: center;
+    font-size: 2rem;
+}
+
+#subHeaderHolder {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding-top: 2%;
+    padding-bottom: 2%;
+}
+
+#shipsHolder {
+    padding: 2%;
+}
+
+.shipBoard {
+    height: 60%;
+    padding: 2%;
+}
+
+.subHeader {
+    margin-right: 10%;
+    margin-left: 10%;
+}
+
+#boardContainer {
+    display: flex;
+    height: 60%;
+    width: 100%;
+}
+
+.side {
+    display: grid;
+    width: 40%;
+    margin-left: 5%;
+    margin-right: 5%;
+    height: 100%;
+    grid-template-columns: repeat(10,1fr);
+    grid-template-rows: repeat(10, 1fr);
+    justify-content: center;
+}
+
+.box {
+    border: 1px solid black;
+}
+
+.shipBoard {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10,1fr);
 }

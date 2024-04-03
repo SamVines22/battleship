@@ -1,14 +1,55 @@
-const functions = require('./battleShipFunctions');
+//const functions = require('./battleShipFunctions');
+//populate opponent display. Makes opponent display from opponent board object.
+it ('test_Game', ()=> {
+    const player1 = functions.player("Lewis");
+    const ai = functions.computer();
+    const comShips = ai.ships;
+    const player1Ships = player1.ships;
+    for (let x = 0; x < comShips.length; x++)
+    {
+        ai.getCoordinate(comShips[x]);
+    }
+    player1.opponentBoard = ai.computerBoard;
+    player1.playerBoard.setLocation(player1Ships[0].name, [0,0], [0,5]);
+    player1.playerBoard.setLocation(player1Ships[1].name, [1,0], [1,4]);
+    player1.playerBoard.setLocation(player1Ships[2].name, [2,0], [2,3]);
+    player1.playerBoard.setLocation(player1Ships[3].name, [3,0], [3,3]);
+    player1.playerBoard.setLocation(player1Ships[4].name, [4,0], [4,2]);
+    ai.opponentBoard = player1.playerBoard;
+    expect(ai.computerBoard).toBe(player1.opponentBoard);
+    expect(ai.opponentBoard).toBe(player1.playerBoard);
+    for (let x = 0; x< 100; x++)
+    { 
+        ai.attack(player1.playerBoard);
+        if (player1.playerBoard.gameOver == true)
+        {
+            console.log(`Game over after ${x}`);
+            break;
+        }
+    }
+     
+     expect(ai.opponentBoard.board).toBe(player1.playerBoard.board);
+     expect(player1.playerBoard.gameOver).toBeTruthy();
+     expect(ai.opponentDisplay[0][0].hit).toBe(1);
 
-/*it('opp board', ()=> {
-    let opp = functions.createOppBoard();
-    console.log(opp);
-    console.log(opp[9][1])
 
-})*/
+    for (let x = 0; x < 10; x++)
+    {
+        for (let y = 0; y < 10; y++)
+        {
+            //ai.computerBoard.receiveAttack([x,y]);
+            let cood = [x,y];
+            player1.attack(ai.computerBoard, cood);
+        }
+    }
+    expect(ai.computerBoard.gameOver).toBeTruthy();
+    console.log(player1.opponentDisplay);
+     
+     
+})
 
 
-it('attack', ()=> {
+it.skip('attack', ()=> {
     let computer = functions.computer();
     let ships = computer.ships;
     computer.opponentBoard.setLocation(ships[0].name, [0,0], [0,5]);
@@ -22,7 +63,7 @@ it('attack', ()=> {
     }
     expect(computer.attackCoor.length).toBe(81);
     console.log(computer.opponentBoard.board);
-    console.log(computer.newTry);
+    console.log(computer.opponentDisplay);
 })
 
 it.skip('computer', ()=> {

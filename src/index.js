@@ -1,29 +1,21 @@
 import './style.css';
 
 import {carrierFactory, shipType} from './battleShipFunctions.js';
+import mainPage from './webpage.js'
+import selectShips from './selectShips.js';
+import chooseLocations from './chooseLocations.js';
+
+//document.querySelector("body").appendChild(mainPage());
+document.querySelector("body").appendChild(selectShips(shipType))
+chooseLocations();
 
 
-console.log("newproject! battleship");
-
-console.log(shipType);
-console.log(shipType[0]);
-const a = carrierFactory(shipType[0]);
-const b = carrierFactory(shipType[1]);
-console.log(a);
-console.log(b);
-
-console.log(a);
-a.hit();
-
-console.log(a.getHitCount());
-
-a.hit();
-console.log(a.getHitCount());
-
-console.log(a.isSunk());
 
 
-a.hit();
-//a.hit();
-a.hit();
-console.log(a.isSunk());
+
+document.querySelectorAll(".box").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+        let cood = [parseInt(btn.id[7]),parseInt(btn.id[8])];
+        console.log(cood);
+    })
+})

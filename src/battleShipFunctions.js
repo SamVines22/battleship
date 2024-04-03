@@ -1,6 +1,3 @@
-function plusThree(num){
-    return 3+num;
-}
 
 const shipType = [{name: "Carrier", length: 5}, {name: "Battleship", length: 4}, {name: "Cruiser", length: 3}, {name: "Submarine", length: 3}, {name: "Destroyer", length: 2}];
 
@@ -32,6 +29,7 @@ function gameBoardFactory(){
     let shipsOnBoard = 0;
     let shipCount = ships.length;
     let gameOver = false;
+    let opponentDisplay = createOppBoard();
     const setLocation = function (ship, start, end) {
            
                 let y = end[0] - start[0];
@@ -74,7 +72,7 @@ function gameBoardFactory(){
        
     
     const receiveAttack = function(arr) {
-       
+      //  console.log("ATTACK");
         if (board[arr[0]][arr[1]]!= null && board[arr[0]][arr[1]] != "*" && board[arr[0]][arr[1]]!= "X")
         {
             let target = board[arr[0]][arr[1]];
@@ -84,6 +82,7 @@ function gameBoardFactory(){
                 if (name == target)
                 {
                     ships[x].hit();  
+                    opponentDisplay[arr[0]][arr[1]].hit = 1;
                     if (ships[x].isSunk() == true)
                     {
                         sunkShips++;
@@ -96,16 +95,19 @@ function gameBoardFactory(){
                 
             }
             board[arr[0]][arr[1]] = "*";
+        //    console.log("HIT");
             return true;
         }
         else if (board[arr[0]][arr[1]]== null){
             board[arr[0]][arr[1]] = "X";
+            opponentDisplay[arr[0]][arr[1]].miss = 1;
+         //   console.log("MISS");
             return false;
         }
     }
 
   
-    return {board, ships, setLocation, receiveAttack, gameOver}
+    return {board, ships, setLocation, receiveAttack, gameOver, opponentDisplay}
 }
 
 
@@ -113,14 +115,29 @@ function player(name)
 {
     let playerBoard = gameBoardFactory();
     let opponentBoard = gameBoardFactory();
-    return {name, playerBoard, opponentBoard};
+    let opponentDisplay = createOppBoard();
+    let ships = playerBoard.ships;
+    let attackCoor = [];
+    const attack = function(enemy, cood) {
+        attackCoor.push(cood);
+        if (enemy.receiveAttack(cood) == true)
+        {
+            this.opponentDisplay[cood[0]][cood[1]].hit = 1; 
+        }
+        else {
+            this.opponentDisplay[cood[0]][cood[1]].miss = 1;
+        }
+    }
+    
+   
+    return {name, playerBoard, opponentBoard, opponentDisplay, ships, attack};
 }
 
 function computer() {
     let computerBoard = gameBoardFactory();
     let opponentBoard = gameBoardFactory();
-    let newTry = createOppBoard();
-    let ships = getShips(shipType);
+    let opponentDisplay = createOppBoard();
+    let ships = computerBoard.ships;
     let shipCount = 0;
     let attackCoor = [];
 
@@ -173,7 +190,7 @@ function computer() {
         
         }       
     }
-    const attack = function() {
+    const attack = function(enemy) {
         let test = false;
         let cood;
         while (test == false){     
@@ -194,13 +211,18 @@ function computer() {
                 test = true;
             }
         } 
-        if (this.opponentBoard.receiveAttack(cood) == true)
+  
+        if (enemy.receiveAttack(cood) == true)
         {
-            this.newTry[cood[0]][cood[1]].hit = 1;
+            this.opponentDisplay[cood[0]][cood[1]].hit = 1; 
         }
+        else {
+            this.opponentDisplay[cood[0]][cood[1]].miss = 1;
+        }
+        
     }
 
-    return {ships, getCoordinate, computerBoard, opponentBoard, shipCount, attack, attackCoor, newTry}
+    return {ships, getCoordinate, computerBoard, opponentBoard, shipCount, attack, attackCoor, opponentDisplay}
 }
 
 
@@ -238,7 +260,7 @@ function createOppBoard() {
         sq.push([]);
         for (let y = 0; y<10; y++)
         {
-            let square = {pos: [x,y], hit: 0}
+            let square = {pos: [x,y], hit: 0, miss: 0}
             sq[x].push(square);
         }
     }
@@ -246,7 +268,7 @@ function createOppBoard() {
 }
 
 
-//export {shipType, carrierFactory};
-module.exports = {shipType, shipFactory, createBoard, gameBoardFactory, getShips, player, computer, createOppBoard};
+export {shipType, gameBoardFactory};
+//module.exports = {shipType, shipFactory, createBoard, gameBoardFactory, getShips, player, computer, createOppBoard};
 
 //module.exports = {plusThree};
