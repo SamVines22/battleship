@@ -1,7 +1,6 @@
  
 
 export default function selectShips(ships) {
-    console.log(ships)
     const selectShipsContainer = document.createElement("div");
     selectShipsContainer.id = "selectShipsContainer";
     selectShipsContainer.className = "container";
@@ -30,11 +29,12 @@ export default function selectShips(ships) {
     shipsHolder.appendChild(submit);
     const board = document.createElement("div"); 
     board.className = "shipBoard";
-    for (let x = 0; x < 10; x++)
+    for (let x = 9; x >= 0; x--)
     {
         for (let y = 0; y<10; y++)
         {
             let box = document.createElement("button");
+            box.innerText = [x,y]
             box.className = "boat";
             box.id = `playBox${x}${y}`;
             board.appendChild(box);

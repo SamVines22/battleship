@@ -7,7 +7,7 @@ import chooseLocations from './chooseLocations.js';
 
 //document.querySelector("body").appendChild(mainPage());
 document.querySelector("body").appendChild(selectShips(shipType))
-chooseLocations();
+chooseLocations(shipType);
 
 
 

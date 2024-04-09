@@ -21,7 +21,7 @@ export default function mainPage() {
     const playerSide = document.createElement("div");
     playerSide.id = "playerSide";
     playerSide.className = "side";
-    for (let x = 0; x < 10; x++)
+    for (let x = 9; x >= 0; x--)
     {
         for (let y = 0; y<10; y++)
         {
@@ -37,7 +37,7 @@ export default function mainPage() {
     const computerSide = document.createElement("div");
     computerSide.id = "computerSide";
     computerSide.className = "side";
-    for (let x = 0; x< 10; x++)
+    for (let x = 9; x >= 0; x--)
     {
         for (let y = 0; y<10; y++)
         {
