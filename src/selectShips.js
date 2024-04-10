@@ -1,6 +1,6 @@
- 
 
 export default function selectShips(ships) {
+    
     const selectShipsContainer = document.createElement("div");
     selectShipsContainer.id = "selectShipsContainer";
     selectShipsContainer.className = "container";

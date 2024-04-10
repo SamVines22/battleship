@@ -1,301 +1,118 @@
 export default function chooseLocations(shipType) {
 let locations = [];
+let count = -1;
 console.log(shipType);
 document.querySelectorAll(".chooseBtn").forEach(function(btn) {
-    btn.addEventListener("click", function(event){
-        event.preventDefault();
-        btn.style.display = "none";
-        let ship = btn.id.slice(3);
-        let shipInfo;
-        for (let x = 0; x< shipType.length; x++)
-        {
-            if (shipType[x].name == ship)
-            {
-                shipInfo = shipType[x];
-            }
-        } 
-        const stCood = new Promise(function(resolve, reject) {
-        let gimp  = chooseStPosition(shipInfo);
-        resolve(gimp);
-    })
-        stCood.then(function(gimp) {
-            console.log("HELLOGIMPO");
-            console.log(gimp);
-            console.log("fdaf");
-        })
-
-    
-        
-        
-
-            
-        
-    });
-   
+    btn.addEventListener("click", getStart);
 })
 
-async function chooseStPosition(ship) {
+function getStart(event) {
+    event.preventDefault();
+    console.log(this);
+    let shipId = this.id;
+    const shipIdLen = shipId.length; 
+    const ship = shipId.substring(3, shipIdLen);
     console.log(ship);
-    console.log(ship.length);
-    const st = new Promise(function(resolve, reject) {
-        document.querySelectorAll(".boat").forEach(function(btn) {
-            btn.addEventListener("click", function() {
-                
-                let cood = [parseInt(btn.id[7]),parseInt(btn.id[8])];
-                resolve(cood);
-            })
-        });
-        setTimeout(function(){reject("gimp");}, 3000);
-    });
-    st.
-    then(
-        function(value){
-        console.log(value);
-        let boxId =`playBox${value[0]}${value[1]}`;
-        document.getElementById(boxId).style.backgroundColor = "green";
-        let choices = []
-            choices.push([value[0], value[1] + ship.length -1]);
-            choices.push([value[0] + ship.length -1, value[1]]);
-            choices.push([value[0], value[1] - (ship.length -1)]);
-            choices.push([value[0] - (ship.length - 1), value[1]]);
-            console.log(choices.length);
-            let goodChoices = [];
-            for (let x = 0; x < 4; x++)
-            {
-                if (choices[x][0] < 10  && choices[x][0] >= 0 && choices[x][1] >= 0 && choices[x][1] < 10)
-                {
-                    goodChoices.push(choices[x]);
-                }
-            }
-            console.log(goodChoices);
-            for (let x = 0; x < goodChoices.length; x++)
-            {
-                let id = `playBox${goodChoices[x][0]}${goodChoices[x][1]}`;;
-                console.log(id);
-                let element = document.getElementById(id);
-                element.style.backgroundColor = "yellow";
-                element.classList.add("choice");
-                element.addEventListener("click", function() {
-                    let first = parseInt(element.id[7]) - parseInt(boxId[7]);
-                    let second = parseInt(element.id[8]) - parseInt(boxId[8]);
-                    let numZero = parseInt(boxId[7]);
-                    let numOne = parseInt(boxId[8]);
-                    console.log(first);
-                    if (first != 0)
-                    {
-                        if (first < 0)
-                        {
-                            for (let y = first; y <=0; y++)
-                            {
-                                let te = document.getElementById(`playBox${numZero+y}${numOne}`);
-                            console.log(te);
-                            te.style.backgroundColor = "green";
-                            te.classList.add("selected");
-                            te.classList.remove("choice");
-                            document.querySelectorAll(".choice").forEach(function(btn) {
-                                btn.style.backgroundColor = "";
-                            })
-                            /// function to add coordinates for the ship!!!
-                             
-                            }
-                            console.log(addCoor(ship));
-                        }
-                        else {
-                        for (let y = 0; y<=first; y++)
-                        {
-                            let te = document.getElementById(`playBox${numZero+y}${numOne}`);
-                            console.log(te);
-                            te.style.backgroundColor = "green";
-                            te.classList.add("selected");
-                            te.classList.remove("choice");
-                            document.querySelectorAll(".choice").forEach(function(btn) {
-                                btn.style.backgroundColor = "";
-                            })
-
-                            
-                        }
-                        console.log(addCoor(ship));
-                    }
-                    }
-                    else if (second != 0){
-                        if (second < 0)
-                        {
-                            for (let y = second; y <=0; y++)
-                            {
-                                let te = document.getElementById(`playBox${numZero}${numOne+y}`);
-                            te.style.backgroundColor = "green";
-                            te.classList.add("selected");
-                            te.classList.remove("choice");
-                            document.querySelectorAll(".choice").forEach(function(btn) {
-                                btn.style.backgroundColor = "";
-                            })
-                            /// function to add coordinates for the ship!!!
-                            
-                            }
-                            console.log(addCoor(ship));
-                        }
-                        else {
-                        for (let y = 0; y<=second; y++)
-                        {
-                            let te = document.getElementById(`playBox${numZero}${numOne+y}`);
-                            te.style.backgroundColor = "green";
-                            te.classList.add("selected");
-                            te.classList.remove("choice");
-                            document.querySelectorAll(".choice").forEach(function(btn) {
-                                btn.style.backgroundColor = "";
-                            })
-
-                            
-                        }
-                        console.log(addCoor(ship));
-                    }
-                    }
-
-                   
-                }) 
-            }
-            
-
-        },
-        function(error) {
-            console.log(error);
-            return "error";
-        })
-        
-    let stCood = await st;
-    return stCood;
+    const shipInfo = document.getElementById(`${ship}ID`);
+    const shipLength = shipInfo.innerText;
+    const lengthOfShip = parseInt(shipLength[shipLength.length -1]);
+    this.style.display = "none";
+    shipInfo.style.display = "none";
+    locations.push({ship: ship, length: lengthOfShip, coor: []});
+    count++;
+    document.querySelectorAll(".boat").forEach(function(btn) {
+        btn.addEventListener("click", showOptions)
+    })
+  
 }
 
-
-async function getOtherCoor(value) {
-        console.log(value);
-        let coordinates;
-
-        let boxId =`playBox${value[0]}${value[1]}`;
-        document.getElementById(boxId).style.backgroundColor = "green";
-        let choices = []
-            choices.push([value[0], value[1] + ship.length -1]);
-            choices.push([value[0] + ship.length -1, value[1]]);
-            choices.push([value[0], value[1] - (ship.length -1)]);
-            choices.push([value[0] - (ship.length - 1), value[1]]);
-            console.log(choices.length);
-            let goodChoices = [];
-            for (let x = 0; x < 4; x++)
-            {
-                if (choices[x][0] < 10  && choices[x][0] >= 0 && choices[x][1] >= 0 && choices[x][1] < 10)
-                {
-                    goodChoices.push(choices[x]);
-                }
-            }
-            console.log(goodChoices);
-            for (let x = 0; x < goodChoices.length; x++)
-            {
-                let id = `playBox${goodChoices[x][0]}${goodChoices[x][1]}`;;
-                console.log(id);
-                let element = document.getElementById(id);
-                element.style.backgroundColor = "yellow";
-                element.classList.add("choice");
-                element.addEventListener("click", function() {
-                    
-                    let first = parseInt(element.id[7]) - parseInt(boxId[7]);
-                    let second = parseInt(element.id[8]) - parseInt(boxId[8]);
-                    let numZero = parseInt(boxId[7]);
-                    let numOne = parseInt(boxId[8]);
-                    console.log(first);
-                    if (first != 0)
-                    {
-                        if (first < 0)
-                        {
-                            for (let y = first; y <=0; y++)
-                            {
-                                let te = document.getElementById(`playBox${numZero+y}${numOne}`);
-                            console.log(te);
-                            te.style.backgroundColor = "green";
-                            te.classList.add("selected");
-                            te.classList.remove("choice");
-                            document.querySelectorAll(".choice").forEach(function(btn) {
-                                btn.style.backgroundColor = "";
-                            })
-                            
-                            }
-                            coordinates = addCoor(ship);
-                        }
-                        else {
-                        for (let y = 0; y<=first; y++)
-                        {
-                            let te = document.getElementById(`playBox${numZero+y}${numOne}`);
-                            console.log(te);
-                            te.style.backgroundColor = "green";
-                            te.classList.add("selected");
-                            te.classList.remove("choice");
-                            document.querySelectorAll(".choice").forEach(function(btn) {
-                                btn.style.backgroundColor = "";
-                            })
-
-                           
-                        }
-                        coordinates = addCoor(ship);
-                    }
-                    }
-                    else if (second != 0){
-                        if (second < 0)
-                        {
-                            for (let y = second; y <=0; y++)
-                            {
-                                let te = document.getElementById(`playBox${numZero}${numOne+y}`);
-                            console.log(te);
-                            te.style.backgroundColor = "green";
-                            te.classList.add("selected");
-                            te.classList.remove("choice");
-                            document.querySelectorAll(".choice").forEach(function(btn) {
-                                btn.style.backgroundColor = "";
-                            })
-                           
-                            }
-                            coordinates = addCoor(ship);
-                        }
-                        else {
-                        for (let y = 0; y<=second; y++)
-                        {
-                            let te = document.getElementById(`playBox${numZero}${numOne+y}`);
-                            console.log(te);
-                            te.style.backgroundColor = "green";
-                            te.classList.add("selected");
-                            te.classList.remove("choice");
-                            document.querySelectorAll(".choice").forEach(function(btn) {
-                                btn.style.backgroundColor = "";
-                            })
-
-                            
-                        }
-                        coordinates = addCoor(ship);
-                    }
-                    }
-
-                   
-                }) 
-            }
-            
-
-        
-
-
-    return coordinates;
-}
-
-function addCoor(ship) {
-    let info = {ship: ship, coor : []};
-    let items = document.querySelectorAll(".selected");
-    for (let x = 0; x<items.length; x++){
-        let one = parseInt(items[x].id[7]);
-        let two = parseInt(items[x].id[8]);
-        info.coor.push([one,two]);
+function showOptions(event) {
+    event.preventDefault();
+    document.querySelectorAll(".boat").forEach(function(btn) {
+        btn.removeEventListener("click", showOptions);
+    })
+    const shipLength = locations[count].length;
+    let startCoordinate = [parseInt(this.id[7]),parseInt(this.id[8])];
+    const start = document.getElementById(`playBox${startCoordinate[0]}${startCoordinate[1]}`);
+    start.style.backgroundColor = "green";
+    start.classList.add("selected");
+    console.log(startCoordinate);
+    const shipData = locations[count];
+    shipData.coor.push(startCoordinate);
+    const options = getOptions(startCoordinate, shipLength);
+    for (let x = 0; x< options.length; x++)
+    {
+        let coor = options[x];
+        console.log(`playbox${coor[0]}${coor[1]}`);
+        let element = document.getElementById(`playBox${coor[0]}${coor[1]}`);
+        console.log(element);
+        element.classList.add("option");
+        element.style.backgroundColor = "yellow";
     }
-    return info;
+    document.querySelectorAll(".option").forEach(function(btn){
+        btn.addEventListener("click", getSelection);
+    })
+}
+
+function getSelection() {
+    this.classList.remove("option");
+    this.classList.add("selected");
+    const start = locations[count].coor[0];
+    let coord = [this.id[7],this.id[8]];
+    let xDiff = coord[0] - start[0];
+    console.log(xDiff);
+    let yDiff = coord[1] - start[1]; 
+    if (xDiff != 0 && xDiff > 0)
+    {
+        for (let x = 0; x <= xDiff; x++){    
+        let block = document.getElementById(`playBox${start[0]+x}${start[1]}`);
+        block.style.backgroundColor = "green";
+        if (x!= 0)
+        {
+            let coordinates = [start[0]+x, start[1]];
+            locations[count].coor.push(coordinates); 
+        }
+        }
+
+    }
+    else if (xDiff != 0 && xDiff < 0)
+    {
+        for (let x = xDiff; x<=0; x++)
+        {
+            let block = document.getElementById(`playBox${start[0]+x}${start[1]}`);
+        block.style.backgroundColor = "green";
+        if (x!= 0)
+        {
+            let coordinates = [start[0]+x, start[1]];
+            locations[count].coor.push(coordinates); 
+        }
+        }
+    }
+    console.log(locations[count])
 }
 
 
+
+function getOptions(coor, len) {
+    let arr = [];
+    let length = len - 1;
+    if (coor[0] + length < 10)
+    {
+        arr.push([coor[0]+length, coor[1]]);
+    }
+    if (coor[0] - length >= 0)
+    {
+        arr.push([coor[0] - length, coor[1]]);
+    }
+    if (coor[1] + length < 10)
+    {
+        arr.push([coor[0], coor[1]+length]);
+    }
+    if (coor[1] - length >=0)
+    {
+        arr.push([coor[0],coor[1]-length])
+    }
+    return arr
 }
 
-
-
+}
