@@ -7,7 +7,11 @@ import chooseLocations from './chooseLocations.js';
 
 //document.querySelector("body").appendChild(mainPage());
 document.querySelector("body").appendChild(selectShips(shipType))
-chooseLocations(shipType);
+let locations = chooseLocations(shipType);
+console.log("GIMP");
+//locations.then(function(value){console.log(value)});
+console.log(locations);
+
 
 
 
