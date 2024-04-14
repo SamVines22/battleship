@@ -1,4 +1,5 @@
-export default async function chooseLocations(shipType) {
+export default async function chooseLocations(shipType) { 
+   let prom = new Promise(function(resolve, reject) {
 let locations = [];
 let count = -1;
 const max = shipType.length;
@@ -41,7 +42,6 @@ function showOptions(event) {
     for (let x = 0; x< options.length; x++)
     {
         let coor = options[x];
-        console.log(checkOption(startCoordinate, coor));
         if (checkOption(startCoordinate,coor) == false)
         {
             continue;
@@ -132,8 +132,7 @@ function getSelection() {
     if (locations.length == max)
     {
         submit.style.display = "block";
-        finished = locations;
-        console.log(locations);
+        
     }
 }
 
@@ -193,7 +192,6 @@ function checkOption(start, end) {
         }
     }
     else if (yDiff != 0 && yDiff < 0) {
-        console.log("HELLO!!!!");
         for(let x = -1; x >= yDiff; x--)
         {
             let element = document.getElementById(`playBox${start[0]}${start[1]+x}`);
@@ -205,10 +203,14 @@ function checkOption(start, end) {
     return true;
 }
 
-document.getElementById("submitCood").onclick = function(event) {
-    event.preventDefault();
-    finished = locations;
-     
-}
 
+document.getElementById("submitCood").addEventListener("click", function(e) {
+    e.preventDefault();
+    resolve(locations);
+})  
+
+
+})
+const p = await prom;
+return p;
 }
