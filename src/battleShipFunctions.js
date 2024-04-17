@@ -2,8 +2,10 @@
 const shipType = [{name: "Carrier", length: 5}, {name: "Battleship", length: 4}, {name: "Cruiser", length: 3}, {name: "Submarine", length: 3}, {name: "Destroyer", length: 2}];
 
 function shipFactory(obj){
+    
     const name = obj.name;
     const length = obj.length;
+  
     let hitCount = 0;
     const getHitCount = function(){return hitCount};
     const hit = function () {
@@ -17,25 +19,26 @@ function shipFactory(obj){
         else return false
        
     }
-
+   // console.log(this.name);
     return {name, length, hit, getHitCount, isSunk,}
     
 }
 
 function gameBoardFactory(){
     let board = createBoard();
+  //  console.log(getShips(shipType));
     let ships = getShips(shipType);
     let sunkShips = 0;
     let shipsOnBoard = 0;
-    let shipCount = ships.length;
+    let shipCount = 5// ships.length;
     let gameOver = false;
     let opponentDisplay = createOppBoard();
     const setLocation = function (ship, start, end) {
-           
+                console.log(ship);
                 let y = end[0] - start[0];
                 let x = end[1] - start[1];
                 if (y!= 0)
-                {   for (let i = 0; i<y; i++)
+                {   for (let i = 0; i<=y; i++)
                     {
                         if (board[start[0]+i][start[1]] != null)
                         {
@@ -44,7 +47,7 @@ function gameBoardFactory(){
                     }   
 
 
-                    for (let i = 0; i<y; i++)
+                    for (let i = 0; i<=y; i++)
                     {
                         board[start[0]+i][start[1]] = `${ship[0]}${ship[1]}${ship[2]}`;
                         
@@ -52,14 +55,14 @@ function gameBoardFactory(){
                     shipsOnBoard++;
                 }
                 else {  
-                    for (let i = 0; i <x; i++)
+                    for (let i = 0; i <=x; i++)
                     {
                         if (this.board[start[0]][start[1]+i] != null)
                         {
                             return "invalid";
                         }
                     }
-                    for (let i = 0; i <x; i++)
+                    for (let i = 0; i <=x; i++)
                     {
                         board[start[0]][start[1]+i] = `${ship[0]}${ship[1]}${ship[2]}`;
                         
@@ -244,7 +247,8 @@ function getShips(arr) {
     let list = []
     for (let x = 0; x<arr.length; x++)
     {
-        obj = shipFactory(arr[x]);
+       
+        let obj = shipFactory(arr[x]);
         list.push(obj);
     }
 
@@ -268,7 +272,7 @@ function createOppBoard() {
 }
 
 
-export {shipType, gameBoardFactory};
+export {shipType, gameBoardFactory, player, computer, getShips, shipFactory};
 //module.exports = {shipType, shipFactory, createBoard, gameBoardFactory, getShips, player, computer, createOppBoard};
 
 //module.exports = {plusThree};
