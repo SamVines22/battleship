@@ -34,7 +34,6 @@ function gameBoardFactory(){
     let gameOver = false;
     let opponentDisplay = createOppBoard();
     const setLocation = function (ship, start, end) {
-                console.log(ship);
                 let y = end[0] - start[0];
                 let x = end[1] - start[1];
                 if (y!= 0)

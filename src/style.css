@@ -54,7 +54,7 @@ body, html {
     justify-content: center;
 }
 
-.box {
+.box, .boxCom {
     border: 1px solid black;
 }
 
@@ -70,4 +70,5 @@ body, html {
 
 .selected {
     background-color: green;
+    background: green;
 }
