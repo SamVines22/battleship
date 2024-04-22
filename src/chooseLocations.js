@@ -128,7 +128,14 @@ function getSelection() {
             btn.classList.remove("option");
         })
     }
-
+    locations[count].coor.sort(function(a,b){
+       
+       if (a[0] == b[0])
+       {
+        return a[1] - b[1];
+       }
+        return a[0]-b[0];
+    })
     if (locations.length == max)
     {
         submit.style.display = "block";

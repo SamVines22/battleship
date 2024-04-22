@@ -4,6 +4,7 @@ import {shipType, gameBoardFactory, player, computer, shipFactory, getShips } fr
 import mainPage from './webpage.js'
 import selectShips from './selectShips.js';
 import chooseLocations from './chooseLocations.js';
+import {getPlayerAttack, bomb, compBomb} from './playBattleship.js'
 
 const play = player("lewis");
 const comp = computer();
@@ -18,9 +19,10 @@ const playerLocations = await chooseLocations(shipType);
 
 for (let x = 0; x<playerLocations.length; x++)
 {
-    let st = playerLocations[x].coor[0];
+    let st = playerLocations[x].coor[0];  
     let len = playerLocations[x].length -1;
     let end = playerLocations[x].coor[len];
+ 
     play.playerBoard.setLocation(playerLocations[x].ship, st, end);
 }
 
@@ -44,16 +46,45 @@ for (let x = 0; x< playerLocations.length; x++)
     }
 }
 
-//player attacks here!!!
-document.querySelectorAll(".boxCom").forEach(function(box) {
-    box.addEventListener("click", function(e) {
-        e.preventDefault();
-        console.log(box.id);
-    })
-    
-})
-
-
-console.log(play.playerBoard);
-//console.log(play.opponentDisplay);
+//player attacks here!!! CHECK THE attack!!!
+let count = 0
 console.log(comp.computerBoard.board);
+while (play.playerBoard.gameOver == false && comp.computerBoard.gameOver == false)
+{
+    if (count %2 == 0 )
+    {
+        console.log("Player");
+        let attackCoor = await getPlayerAttack();
+        
+        if (play.attack(comp.computerBoard,attackCoor) == "hit")
+        {
+            bomb(attackCoor, "hit");
+        }
+        else {
+            bomb(attackCoor, "miss")
+        };
+        comp.computerBoard.receiveAttack(attackCoor);
+        
+    }
+    else
+    {
+        let att = comp.attack(play.playerBoard);
+        if (att.hit == true){
+            console.log("hit");
+            console.log(att.cood);
+            compBomb(att.cood, "hit");
+        }
+        if (att.hit == false) {
+            console.log("miss");
+            console.log(att.cood);
+            compBomb(att.cood, "miss");
+        }
+    }
+    count++;
+}
+
+console.log(play);
+console.log(play.opponentDisplay);
+
+
+

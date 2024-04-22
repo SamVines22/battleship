@@ -19,18 +19,16 @@ function shipFactory(obj){
         else return false
        
     }
-   // console.log(this.name);
     return {name, length, hit, getHitCount, isSunk,}
     
 }
 
 function gameBoardFactory(){
     let board = createBoard();
-  //  console.log(getShips(shipType));
     let ships = getShips(shipType);
     let sunkShips = 0;
     let shipsOnBoard = 0;
-    let shipCount = 5// ships.length;
+    let shipCount = ships.length;
     let gameOver = false;
     let opponentDisplay = createOppBoard();
     const setLocation = function (ship, start, end) {
@@ -125,9 +123,11 @@ function player(name)
         if (enemy.receiveAttack(cood) == true)
         {
             this.opponentDisplay[cood[0]][cood[1]].hit = 1; 
+            return "hit";
         }
         else {
             this.opponentDisplay[cood[0]][cood[1]].miss = 1;
+            return "miss";
         }
     }
     
@@ -217,9 +217,11 @@ function computer() {
         if (enemy.receiveAttack(cood) == true)
         {
             this.opponentDisplay[cood[0]][cood[1]].hit = 1; 
+            return {hit : true , cood : cood};
         }
         else {
             this.opponentDisplay[cood[0]][cood[1]].miss = 1;
+            return {hit: false, cood: cood};
         }
         
     }
