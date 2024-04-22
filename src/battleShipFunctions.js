@@ -132,7 +132,7 @@ function player(name)
     }
     
    
-    return {name, playerBoard, opponentBoard, opponentDisplay, ships, attack};
+    return {name, playerBoard, opponentBoard, opponentDisplay, ships, attack, attackCoor};
 }
 
 function computer() {
@@ -144,7 +144,7 @@ function computer() {
     let attackCoor = [];
 
     const getCoordinate = function(ship) {
-        const len = ship.length;
+        const len = ship.length-1;
         let start, end;
         let yCo;
         let xCo;

@@ -2,6 +2,7 @@ export default function mainPage() {
 
     const container = document.createElement("div");
     container.className = "container";
+    container.id = "co";
     const header = document.createElement("div");
     header.id = "header";
     header.innerText = "Battleships!";

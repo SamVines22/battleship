@@ -4,7 +4,7 @@ import {shipType, gameBoardFactory, player, computer, shipFactory, getShips } fr
 import mainPage from './webpage.js'
 import selectShips from './selectShips.js';
 import chooseLocations from './chooseLocations.js';
-import {getPlayerAttack, bomb, compBomb} from './playBattleship.js'
+import {getPlayerAttack, bomb, compBomb, victory} from './playBattleship.js'
 
 const play = player("lewis");
 const comp = computer();
@@ -53,38 +53,56 @@ while (play.playerBoard.gameOver == false && comp.computerBoard.gameOver == fals
 {
     if (count %2 == 0 )
     {
+        let test = 0;
         console.log("Player");
         let attackCoor = await getPlayerAttack();
-        
-        if (play.attack(comp.computerBoard,attackCoor) == "hit")
+        console.log(attackCoor);
+        console.log(play.attackCoor);
+        for (let x = 0; x<play.attackCoor.length; x++)
         {
-            bomb(attackCoor, "hit");
+            console.log(play.attackCoor[x]);
+            if (attackCoor[0] == play.attackCoor[x][0] && attackCoor[1] == play.attackCoor[x][1])
+            {
+            
+                console.log("ALREADY");
+                test = 1;
+            }
+
+        } 
+        // a bit of attention here stop pressing on the same box twice.
+        if (test == 0) {
+            if (play.attack(comp.computerBoard,attackCoor) == "hit")
+            {
+                bomb(attackCoor, "hit");
+            }
+            else {
+                bomb(attackCoor, "miss")
+            };
+            comp.computerBoard.receiveAttack(attackCoor);
         }
-        else {
-            bomb(attackCoor, "miss")
-        };
-        comp.computerBoard.receiveAttack(attackCoor);
-        
     }
     else
     {
         let att = comp.attack(play.playerBoard);
         if (att.hit == true){
-            console.log("hit");
-            console.log(att.cood);
             compBomb(att.cood, "hit");
         }
         if (att.hit == false) {
-            console.log("miss");
-            console.log(att.cood);
             compBomb(att.cood, "miss");
         }
     }
     count++;
 }
 
-console.log(play);
-console.log(play.opponentDisplay);
-
+//console.log(play);
+//console.log(play.opponentDisplay);
+if (play.playerBoard.gameOver == true)
+{
+    victory("computer");
+}
+if (comp.computerBoard.gameOver == true)
+{
+    victory("player");
+}
 
 

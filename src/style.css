@@ -72,3 +72,11 @@ body, html {
     background-color: green;
     background: green;
 }
+
+#victory {
+    width: 100%;
+    text-align: center;
+    font-size: 5rem;
+
+
+}
